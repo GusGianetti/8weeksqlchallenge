@@ -32,3 +32,17 @@ SELECT customer_id, COUNT(DISTINCT order_date) AS visit_days
 FROM sales
 GROUP BY customer_id;
 
+--3:
+WITH cte_product AS (
+    SELECT sales.customer_id, 
+           menu.product_name, 
+  		   sales.order_date,
+           ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) row_a
+    FROM       dannys_diner.sales
+    INNER JOIN dannys_diner.menu 
+            ON sales.product_id = menu.product_id
+)
+SELECT *
+FROM cte_product
+WHERE row_a = 1;
+
