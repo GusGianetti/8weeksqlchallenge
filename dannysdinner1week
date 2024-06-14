@@ -1,3 +1,4 @@
+
 /* --------------------
    Case Study Questions
    --------------------*/
@@ -45,4 +46,26 @@ WITH cte_product AS (
 SELECT *
 FROM cte_product
 WHERE row_a = 1;
+
+4--
+  WITH product_sales AS (
+    SELECT   
+        product_id,
+        COUNT(*) AS product_count
+    FROM
+        dannys_diner.sales
+    GROUP BY    
+        product_id
+)
+SELECT
+    ps.product_id,
+    m.product_name,
+    ps.product_count
+FROM
+    product_sales ps
+INNER JOIN
+    dannys_diner.menu m ON ps.product_id = m.product_id
+ORDER BY
+    ps.product_count DESC
+LIMIT 1;
 
